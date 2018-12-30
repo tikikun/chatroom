@@ -27,7 +27,7 @@ func main() {
 	})
 
 	r.GET("/room/:name/log", func(c *gin.Context) {
-		http.ServeFile(c.Writer, c.Request, strings.Split(c.Request.URL.Path, "/")[2]+".log")
+		http.ServeFile(c.Writer, c.Request, c.Param("name")+".log")
 	})
 
 	r.GET("/room/:name/ws", func(c *gin.Context) {

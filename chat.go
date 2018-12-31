@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -13,6 +14,8 @@ import (
 func main() {
 	r := gin.Default()
 	m := melody.New()
+
+	r.StaticFile("/chat.js", "./assets/js/chat.js")
 
 	r.GET("/", func(c *gin.Context) {
 		http.Redirect(c.Writer, c.Request, "/room/global", http.StatusFound)
@@ -27,7 +30,10 @@ func main() {
 	})
 
 	r.GET("/room/:name/log", func(c *gin.Context) {
-		http.ServeFile(c.Writer, c.Request, c.Param("name")+".log")
+		if _, err := os.Stat(c.Param("name") + ".log"); err == nil {
+			http.ServeFile(c.Writer, c.Request, c.Param("name")+".log")
+		}
+		fmt.Fprint(c.Writer, "There is no message yet\n")
 	})
 
 	r.GET("/room/:name/ws", func(c *gin.Context) {

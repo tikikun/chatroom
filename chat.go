@@ -16,6 +16,7 @@ func main() {
 	m := melody.New()
 
 	r.StaticFile("/chat.js", "./assets/js/chat.js")
+	r.StaticFile("/chat.css", "./assets/css/chat.css")
 
 	r.GET("/", func(c *gin.Context) {
 		http.Redirect(c.Writer, c.Request, "/room/global", http.StatusFound)

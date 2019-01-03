@@ -35,6 +35,8 @@ func main() {
 			http.Redirect(w, r, "/room/global", http.StatusFound)
 		case "ws":
 			me.HandleRequest(w, r)
+		case "log":
+			http.ServeFile(w, r, val[len(val)-2]+".log")
 		default:
 			fmt.Println(name)
 			http.ServeFile(w, r, "room.html")

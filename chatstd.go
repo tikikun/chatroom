@@ -21,8 +21,14 @@ func main() {
 			http.ServeFile(w, r, "assets/css/chat.css")
 		case "chat.js":
 			http.ServeFile(w, r, "assets/js/chat.js")
-		default:
+		case "room":
 			http.Redirect(w, r, "/room/global", http.StatusFound)
+		default:
+			if name == "" {
+				http.Redirect(w, r, "/room/global", http.StatusFound)
+			} else {
+				fmt.Fprintf(w, "Status not found code %v", http.StatusNotFound)
+			}
 		}
 	})
 
@@ -30,7 +36,7 @@ func main() {
 		val := strings.Split(r.URL.Path, "/")
 		name := val[len(val)-1]
 		switch name {
-		case "room":
+		case "":
 			fmt.Println("room")
 			http.Redirect(w, r, "/room/global", http.StatusFound)
 		case "ws":

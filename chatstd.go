@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/olahol/melody"
@@ -44,8 +45,15 @@ func main() {
 		case "log":
 			http.ServeFile(w, r, val[len(val)-2]+".log")
 		default:
-			fmt.Println(name)
-			http.ServeFile(w, r, "room.html")
+			m, err := regexp.MatchString("^[a-zA-Z]+$", name)
+			if err != nil {
+				fmt.Fprintf(w, "This is not even a string")
+			}
+			if m == true {
+				http.ServeFile(w, r, "room.html")
+			} else {
+				fmt.Fprintf(w, "The name you just type into cannot be used")
+			}
 		}
 	})
 
